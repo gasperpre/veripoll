@@ -86,7 +86,7 @@ export default function HowtoPopup({ trigger }) {
       </p>
       <hr className='mb-4 border-gray-400' />
       <p className='mb-5 text-sm leading-5 text-center text-gray-700'>
-        You can always access this guide from <HiDotsVertical className='inline w-4 h-4 -mr-1' /> <b>Menu</b> >{' '}
+        You can always access this guide from <HiDotsVertical className='inline w-4 h-4 -mr-1' /> <b>Menu</b> {' '}
         <b>How to vote?</b>
       </p>
       <Modal.Actions>
