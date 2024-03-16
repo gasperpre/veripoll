@@ -17,12 +17,13 @@ const getWeb3Modal = () =>
         display: {},
         package: null,
       },
-      walletconnect: {
-        package: WalletConnectProvider,
-        options: {
-          infuraId: 'INFURA_ID', // required
-        },
-      },
+      // TODO: upgrade walletconnect
+      // walletconnect: {
+      //   package: WalletConnectProvider,
+      //   options: {
+      //     infuraId: 'INFURA_ID', // required
+      //   },
+      // },
     },
   })
 
