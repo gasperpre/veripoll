@@ -1,27 +1,7 @@
 import { Contract } from 'ethers'
-import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { Command, Keypair, PubKey } from 'maci-domainobjs'
 import { genRandomSalt } from 'maci-crypto'
 import { MACI_COORDINATOR_PUBKEY } from './constants'
-
-async function getEventArg(
-  transaction: TransactionResponse,
-  contract: Contract,
-  eventName: string,
-  argumentName: string
-): Promise<any> {
-  const receipt = await transaction.wait()
-  for (const log of receipt.logs || []) {
-    if (log.address != contract.address) {
-      continue
-    }
-    const event = contract.interface.parseLog(log)
-    if (event && event.name === eventName) {
-      return event.args[argumentName]
-    }
-  }
-  throw new Error('Event not found')
-}
 
 export async function calcVotingDeadline(maci: Contract): Promise<number> {
   try {
@@ -41,13 +21,24 @@ export async function signUp(
   try {
     const tx = await maci.signUp(
       keypair.pubKey.asContractParam(),
-      [data],
-      [
-        /* initialVoiceCreditProxyData: empty */
-      ]
+      data,
+      '0x0000000000000000000000000000000000000000000000000000000000000000'
     )
-    const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
-    const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
+    
+    const receipt = await tx.wait();
+
+    if (receipt?.status !== 1) {
+      alert("The transaction failed");
+    }
+
+    if (!receipt?.logs) {
+      throw Error("Unable to retrieve the transaction receipt");
+    }
+    // get state index from the event
+    const [log] = receipt.logs;
+    const { args } = maci.interface.parseLog(log as unknown as { topics: string[]; data: string }) || { args: [] };
+    const userStateIndex = parseInt(args[0]);
+    const voiceCredits = parseInt(args[3]);
     return { userStateIndex, voiceCredits }
   } catch (err: any) {
     alert(err?.data?.message || err?.message)

@@ -16,10 +16,13 @@ export default function SignUpPopup() {
   }, [signedUp])
 
   const onIDKitSuccess = res => {
-    const { merkle_root, nullifier_hash, proof } = res
+    const { merkle_root, nullifier_hash, proof } = res;
+    const decodedProof = ethers.utils.defaultAbiCoder.decode(['uint256[8]'], proof)[0];
+    const decodedRoot = ethers.utils.defaultAbiCoder.decode(['uint256'], merkle_root)[0];
+    const decodedHash = ethers.utils.defaultAbiCoder.decode(['uint256'], nullifier_hash)[0];
     const data = ethers.utils.defaultAbiCoder.encode(
-      ['uint256', 'uint256', 'bytes'],
-      [merkle_root, nullifier_hash, proof]
+      ['uint256', 'uint256', 'uint256[8]'],
+      [decodedRoot, decodedHash, decodedProof]
     )
     signUp(data)
   }
