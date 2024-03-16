@@ -3,7 +3,6 @@ import useGlobalState from 'hooks/useGlobalState'
 import HamburgerMenu from 'components/HamburgerMenu'
 import VotingControls from 'components/VotingControls'
 import WalletConnectButton from 'components/WalletConnectButton'
-import NotEligibleToSignUpPopup from 'components/NotEligibleToSignUpPopup'
 import NominateImageModal from 'components/NominateImage'
 import SignUpPopup from 'components/SignUpPopup'
 import InitialKeyChangePopup from 'components/InitialKeyChangePopup'
@@ -34,7 +33,6 @@ export default function Nav() {
   const {
     address,
     balance,
-    hasEligiblePOAPtokens,
     signedUp,
     initialKeyChangePerformed,
     loading,
@@ -48,7 +46,7 @@ export default function Nav() {
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
           <SignUpCountDown votingDeadline={votingDeadline} signedUp={signedUp} />
-          {address && hasEligiblePOAPtokens && signedUp && (
+          {address && signedUp && (
             <>
               <span className='px-6 border-none cursor-default button' title='Your voice credits'>
                 {balance} {pluralize('credits', balance)}
@@ -62,13 +60,11 @@ export default function Nav() {
         <div className='absolute right-0 top-auto pr-4' style={{ top: '4em' }}>
           {(() => {
             if (!address) return null
-            if (!hasEligiblePOAPtokens) {
-              return <NotEligibleToSignUpPopup />
-            } else if (hasEligiblePOAPtokens && !signedUp) {
+            if (!signedUp) {
               return <SignUpPopup />
-            } else if (hasEligiblePOAPtokens && signedUp && !initialKeyChangePerformed) {
+            } else if (!initialKeyChangePerformed) {
               return <InitialKeyChangePopup />
-            } else if (hasEligiblePOAPtokens && signedUp && initialKeyChangePerformed) {
+            } else {
               return <VotingControls />
             }
           })()}

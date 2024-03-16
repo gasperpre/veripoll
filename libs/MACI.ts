@@ -1,4 +1,4 @@
-import { ethers, Contract, providers } from 'ethers'
+import { Contract } from 'ethers'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { Command, Keypair, PubKey } from 'maci-domainobjs'
 import { genRandomSalt } from 'maci-crypto'
@@ -36,12 +36,12 @@ export async function calcVotingDeadline(maci: Contract): Promise<number> {
 export async function signUp(
   maci: Contract,
   keypair: Keypair,
-  poapTokenId: BigInt
+  data: string
 ): Promise<{ userStateIndex: number; voiceCredits: number }> {
   try {
     const tx = await maci.signUp(
       keypair.pubKey.asContractParam(),
-      [ethers.utils.defaultAbiCoder.encode(['uint256'], [poapTokenId])],
+      [data],
       [
         /* initialVoiceCreditProxyData: empty */
       ]
@@ -49,8 +49,8 @@ export async function signUp(
     const userStateIndex = parseInt(await getEventArg(tx, maci, 'SignUp', '_stateIndex'))
     const voiceCredits = parseInt(await getEventArg(tx, maci, 'SignUp', '_voiceCreditBalance'))
     return { userStateIndex, voiceCredits }
-  } catch (err) {
-    alert(err.data?.message || err.message)
+  } catch (err: any) {
+    alert(err?.data?.message || err?.message)
     throw err
   }
 }
@@ -73,8 +73,8 @@ export async function publish(
     const tx = await maci.publishMessage(message.asContractParam(), keypair.pubKey.asContractParam())
     const receipt = await tx.wait()
     return receipt
-  } catch (err) {
-    alert(err.data?.message || err.message)
+  } catch (err: any) {
+    alert(err?.data?.message || err?.message)
     throw new Error(err)
   }
 }

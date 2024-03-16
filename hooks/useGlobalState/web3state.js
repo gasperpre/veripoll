@@ -1,7 +1,5 @@
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
-import WalletConnectProvider from '@walletconnect/web3-provider'
-import { attendedEligiblePOAPEvents } from 'libs/getPoapEvents'
 import { calcVotingDeadline } from 'libs/MACI'
 import { MACI_ADDRESS } from 'libs/constants'
 import MACI_ABI from 'abi/MACI.abi.json'
@@ -50,16 +48,11 @@ const connect = async ({ setState, ...store }) => {
         const ensName = await ethersProvider.lookupAddress(address)
         setState({ ensName })
       } catch (err) {}
-      const poapMinEligibleYear = 2018
-      const { eligible, poapTokenId } = await attendedEligiblePOAPEvents(address, provider, poapMinEligibleYear)
-      setState({ hasEligiblePOAPtokens: eligible, poapTokenId })
     } else if (networkName === 'kovan') {
       if (store.state.maciAddressKovan) {
         maci = new ethers.Contract(store.state.maciAddressKovan, MACI_ABI, signer)
       }
-      setState({ maci, hasEligiblePOAPtokens: true })
-    } else {
-      setState({ hasEligiblePOAPtokens: true })
+      setState({ maci })
     }
     const votingDeadline = await calcVotingDeadline(maci)
     setState({ votingDeadline })

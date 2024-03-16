@@ -69,13 +69,13 @@ const initialState = {
 
 const actions = {
   ...web3state.actions,
-  signUp: async (store: any) => {
+  signUp: async (store: any, data: string) => {
     const { chainId } = await store.state.ethersProvider.getNetwork()
     if (chainId === 1) return alert(`Sorry, we are not on mainnet yet. Try other networks.`)
     store.setState({ loading: true })
-    const { maci, keyPair, poapTokenId } = store.state
+    const { maci, keyPair } = store.state
     try {
-      const { userStateIndex, voiceCredits } = await MaciSignUp(maci, keyPair, BigInt(poapTokenId || 0))
+      const { userStateIndex, voiceCredits } = await MaciSignUp(maci, keyPair, data);
       localStorage.setItem('userStateIndex', String(userStateIndex))
       localStorage.setItem('voiceCredits', String(voiceCredits))
       store.setState({ signedUp: true, balance: voiceCredits, userStateIndex })
