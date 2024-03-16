@@ -18,8 +18,8 @@ export default function SignUpPopup() {
   const onIDKitSuccess = res => {
     const { merkle_root, nullifier_hash, proof } = res
     const data = ethers.utils.defaultAbiCoder.encode(
-      ['address', 'uint256', 'uint256', 'bytes'],
-      [address, merkle_root, nullifier_hash, proof]
+      ['uint256', 'uint256', 'bytes'],
+      [merkle_root, nullifier_hash, proof]
     )
     signUp(data)
   }
