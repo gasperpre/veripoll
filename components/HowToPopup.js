@@ -30,7 +30,7 @@ export default function HowtoPopup({ trigger }) {
       easyToDismiss={false}
       onOpenStateChange={onOpenStateChange}
       trigger={trigger}
-      title='About QDH'>
+      title='About AnoniVote'>
       <p className='mb-5 text-sm leading-5 text-gray-800'>
         AnoniVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
         Infrastructure (MACI) to prevent bribery and scale images quadratically. Additionally, it uses World ID to ensure sybil resistance.
@@ -64,13 +64,6 @@ export default function HowtoPopup({ trigger }) {
         voting mode with <b className='p-1 py-0 ml-1 border border-gray-600 rounded'>n</b> shortcut.
       </p>
       <h3 className='mb-2 text-lg font-medium leading-6 text-gray-900'>Learn more</h3>
-      <p className='mb-5 text-sm leading-5 text-gray-800'>
-        To learn more about how QDH and MACI works{' '}
-        <a href='https://github.com/appliedzkp/qdh#quadratic-dollar-homepage' target='_blank'>
-          click here
-        </a>
-        .
-      </p>
       <hr className='mb-4 border-gray-400' />
       <p className='mb-5 text-sm leading-5 text-center text-gray-700'>
         You can always access this guide from <HiDotsVertical className='inline w-4 h-4 -mr-1' /> <b>Menu</b> {' '}

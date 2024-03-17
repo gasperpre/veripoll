@@ -59,7 +59,7 @@ const initialState = {
         console.log('MACI key generated', keyPair.pubKey.serialize())
         return keyPair
       } else {
-        const keyPair = new Keypair(PrivKey.unserialize(macisk))
+        const keyPair = new Keypair(PrivKey.deserialize(macisk))
         console.log('MACI key loaded', keyPair.pubKey.serialize())
         return keyPair
       }

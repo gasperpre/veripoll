@@ -1,7 +1,6 @@
 import { Contract, ethers } from 'ethers'
-import { Command, Keypair, PubKey } from 'maci-domainobjs'
+import { PCommand, Keypair, PubKey } from 'maci-domainobjs'
 import { genRandomSalt } from 'maci-crypto'
-import { MACI_COORDINATOR_PUBKEY } from './constants'
 import POLL_ABI from 'abi/Poll.abi.json'
 
 export async function calcVotingDeadline(maci: Contract): Promise<number> {
@@ -51,25 +50,31 @@ export async function publish(
   signer: any,
   maci: Contract,
   keypair: Keypair,
-  stateIndex: BigInt,
-  voteOptionIndex: BigInt,
-  voteWeight: BigInt,
-  nonce: BigInt
+  stateIndex: bigint,
+  voteOptionIndex: bigint,
+  voteWeight: bigint,
+  nonce: bigint
 ): Promise<any> {
   // READ https://github.com/appliedzkp/maci/blob/master/contracts/ts/__tests__/PublishMessage.test.ts#L83
-  const coordinatorPubKey = PubKey.unserialize(MACI_COORDINATOR_PUBKEY)
-  const command = new Command(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, genRandomSalt())
-  const signature = command.sign(keypair.privKey)
-  const sharedKey = Keypair.genEcdhSharedKey(keypair.privKey, coordinatorPubKey)
-  const message = command.encrypt(signature, sharedKey)
+  const command = new PCommand(stateIndex, keypair.pubKey, voteOptionIndex, voteWeight, nonce, BigInt(0), genRandomSalt())
   try {
     const pollAddress = await maci.getPoll(0);
     const poll = new ethers.Contract(pollAddress, POLL_ABI, signer)
+    const coordinatorPubKeyResult = await poll.coordinatorPubKey();
+    const coordinatorPubKey = new PubKey([
+      BigInt(coordinatorPubKeyResult.x.toString()),
+      BigInt(coordinatorPubKeyResult.y.toString()),
+    ]);
+    // sign the command with the user private key
+    const signature = command.sign(keypair.privKey);
+    // encrypt the command using a shared key between the user and the coordinator
+    const message = command.encrypt(signature, Keypair.genEcdhSharedKey(keypair.privKey, coordinatorPubKey));
     const tx = await poll.publishMessage(message.asContractParam(), keypair.pubKey.asContractParam())
     const receipt = await tx.wait()
     return receipt
   } catch (err: any) {
-    alert(err?.data?.message || err?.message)
+    console.error(err);
+    // alert(err?.data?.message || err?.message)
     throw new Error(err)
   }
 }
