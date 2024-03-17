@@ -1,11 +1,11 @@
 [Go to MACI repo](https://github.com/gasperpre/maci)
 
-# AnoniVote
+# AnonVote
 
-AnoniVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
+AnonVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
 Infrastructure (MACI) to prevent bribery and scale images quadratically. Additionally, it uses World ID to ensure sybil resistance.
 
-## How to run AnoniVote locally
+## How to run AnonVote locally
 
 Clone this repo. Install dependencies by running `yarn` or `npm install`:
 

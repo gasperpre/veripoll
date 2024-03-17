@@ -30,9 +30,9 @@ export default function HowtoPopup({ trigger }) {
       easyToDismiss={false}
       onOpenStateChange={onOpenStateChange}
       trigger={trigger}
-      title='About AnoniVote'>
+      title='About AnonVote'>
       <p className='mb-5 text-sm leading-5 text-gray-800'>
-        AnoniVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
+        AnonVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
         Infrastructure (MACI) to prevent bribery and scale images quadratically. Additionally, it uses World ID to ensure sybil resistance.
       </p>
       <h3 className='mb-2 text-lg font-medium leading-6 text-gray-900'>How to vote</h3>
