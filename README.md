@@ -1,4 +1,4 @@
-![QDH Logo](https://quadratic.page/ballot-box-emoji.png)
+[Go to MACI repo](https://github.com/gasperpre/maci)
 
 # Quadratic Dollar Homepage
 
@@ -7,15 +7,11 @@ it also features a space for images on a webpage, it allows users to vote on how
 Moreover, it employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
 Infrastructure (MACI) to prevent bribery and scale images quadratically.
 
-**DEMO**: https://www.youtube.com/watch?v=b6VonnS8e1M
-
 ## How to run QDH locally
 
 Clone this repo. Install dependencies by running `yarn` or `npm install`:
 
 ```bash
-git clone https://github.com/appliedzkp/qdh
-cd qdh
 yarn  # or `npm install`
 ```
 
@@ -63,136 +59,9 @@ Now let's set up and deploy MACI on a local testnet.
 
 In a separate terminal, clone MACI: https://github.com/appliedzkp/maci
 
-Carefully follow everything in ["Local development and testing"](https://github.com/appliedzkp/maci#local-development-and-testing): bootstrap MACI repo, install Rust, build zk-SNARKs, compile contracts... everything up to the ["Demo"](https://github.com/appliedzkp/maci#demo) section.
+Carefully follow the steps in ["Local development and testing"](https://github.com/appliedzkp/maci#local-development-and-testing): bootstrap MACI repo, install Rust, build zk-SNARKs, compile contracts, deploy them and deploy a poll.
 
-Here is a summary of commands described in detail in the abovementioned guide:
-
-```bash
-git clone git@github.com:appliedzkp/maci.git
-cd maci
-npm i && npm run bootstrap && npm run build
-
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  # to install Rust
-cargo install zkutil --version 0.3.2 && zkutil --help
-
-cd circuits
-npm run buildBatchUpdateStateTreeSnark && npm run buildQuadVoteTallySnark
-
-cd ../contracts
-npm run compileSol
-```
-
-From the same directory (`maci/contracts`) start a Ganache instance:
-
-```bash
-npm run ganache
-```
-
-In a separate terminal, go to `maci/cli` directory and create a new MACI election:
-
-```bash
-node ./build/index.js create -d 0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3 \
-	-sk macisk.8715ab59a3e88a7ceec80f214ec24a95287ef2cb399a329b6964a87f85cf51c \
-	-e http://localhost:8545 \
-	-s 15 \
-	-o 60 \
-	-bm 4 \
-	-bv 4
-```
-
-Once you've deployed MACI and created an election, you should have an output like this:
-
-```bash
-MACI: 0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
-```
-
-Now you have 15 seconds to go to the frontend http://localhost:3000 and sign up. Then you'll be able to start voting and interacting with MACI. If you didn't signup in time - restart ganache and redeploy MACI (steps above). Also, you can increase MACI signup deadline, by changing `-s 15` to `-s 30` seconds.
-
-Don't forget to connect your Metamask to your local testnet `locahost:8545` and import one of the test wallets into it.
-
-You can find a detailed guide of this step and other MACI commands in the [MACI Demonstration](https://github.com/appliedzkp/maci/tree/master/cli#demonstration) docs.
-
-You can also watch & listen to these great in-depth presentations about MACI by Koh Wei Jie: [Making Sense of MACI](https://www.youtube.com/watch?v=ooxgPzdaZ_s), [ZKPodcast: MACI with Koh Wei Jie](https://www.youtube.com/watch?v=f9nUGPD5I3o) and [Minimum Anti-Collusion Infrastructure (MACI)](https://www.youtube.com/watch?v=sKuNj_IQVYI)
-
-
-## Setting up Admin Dashboard
-
-The goal of the Admin Dashboard is to simplify moderation of uploaded images, supply basic initial configuration to the QDH frontend (e.g. MACI contract address on the mainnet) and upload `tally.json` once the vote results are tallied.
-
-Setting up and running [Admin Dashboard](https://github.com/appliedzkp/qdh-admin) is not mandatory, but recommended. We've based it on an open source headless
-CMS, called [Strapi](https://strapi.io/).
-
-You'll be able to find detailed instructions on how to run it in the repo's README, but we'll make a short overview here as well.
-
-Clone the repo https://github.com/appliedzkp/qdh-admin and install dependencies with `yarn` (or `npm install`)
-```bash
-git clone https://github.com/appliedzkp/qdh-admin
-cd qdh-admin
-yarn  # or `npm install`
-```
-
-Copy `.env.example` and name it `.env`.
-
-In `.env` set values for all the missing variables, such as `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`,
-`AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING` with the same values as used above.
-
-```bash
-cp .env.example .env
-vim .env # set `MONGO_URL`, `AZURE_STORAGE_ACCOUNT_NAME`, `AZURE_CONTAINER_NAME`, `AZURE_KEY`, `AZURE_CONNECTION_STRING`.
-```
-
-Run `yarn develop` to start the server locally.
-
-The api will be available at `http://localhost:1337` and the admin panel at `http://localhost:1337/admin`
-
-You might want to update `NEXT_PUBLIC_STRAPI_URL=http://localhost:1337` in the `.env` in _qdh frontend_, so that your local frontend talks to your locally run Strapi Admin api. Don't forget to manually kill and start the frontend server. (Next.js doesn't automatically pick up .env file changes.)
-
-## How to run QDH in production
-
-This repo is ready for [Vercel](https://vercel.io), [Heroku](https://heroku.com) and [Dokku](https://github.com/dokku/dokku) deployments. Make sure to export enviromental variables from `.env` to the platform you are deploying on.
-
-### Deploying on Vercel
-Install [Vercel CLI](https://vercel.com/download):
-```bash
-yarn global add vercel
-# or
-npm i -g vercel
-```
-
-Then from your `qdh/` directory run `vercel` to start the deployment process and follow the steps. Should work automagically:
-
-```bash
-vercel
-```
-
-You can also auto deploy to Vercel by importing your git repo: https://vercel.com/new
-
-### Deploying on Heroku
-If you don't have `heroku` cli installed yet, [install it](https://devcenter.heroku.com/articles/heroku-cli): `brew tap heroku/brew && brew install heroku` on macOS or `sudo snap install --classic heroku` on Ubuntu 16+. Then run `heroku login` to link your Heroku CLI to your account.
-
-Then from your `qdh/` repo directory run the following:
-
-```bash
-heroku create qdh-frontend
-heroku config:set $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') --app qdh-frontend # this will pick up variables from .env and transport them to your heroku instance
-heroku git:remote --app qdh-frontend
-git push heroku master
-```
-
-If name `qdh-frontend` is already taken, try the steps above with a different name.
-
-### Deploying on Dokku
-
-[Dokku](https://github.com/dokku/dokku) is a Docker powered mini-Heroku.
-
-Follow [these instructions](https://github.com/dokku/dokku#installation) to install Dokku on your server. Make sure to add your pub ssh keys to the dokku deployment (not just to  ~/.ssh/authorized_keys on your server). Once you do that, you should be able to run the following from your local machine:
-
-```bash
-ssh -t dokku@your-server-ip apps:create qdh-frontend
-ssh -t dokku@your-server-ip config:set qdh-frontend $(cat .env | sed '/^$/d; /#[[:print:]]*$/d') # this will pick up variables from .env and transport them to your dokku instance
-git remote add dokku dokku@your-server-ip:qdh-frontend
-git push dokku master
-```
+Once you've deployed MACI and created a poll, add your MACI contract address to `.env`.
 
 
 ## Setting up Azure Storage
@@ -217,7 +86,3 @@ p.s. We'll eventually try to make this project cloud agnostic. Feel free to cont
 - If you are are looking for a free & easy MongoDB hosting, try [Mongo Atlas](https://www.mongodb.com/cloud/atlas)
 - If you've used [Dokku](https://github.com/dokku/dokku) before, you can deploy mongo instance on it using [dokku-mongo](https://github.com/dokku/dokku-mongo) plugin.
 - You can also deploy MongoDB on your IaaS or PaaS of choice.
-
-## Translation
-
-- [Korean / 한국어](/i18n/README.ko.md)

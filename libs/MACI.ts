@@ -1,7 +1,8 @@
-import { Contract } from 'ethers'
+import { Contract, ethers } from 'ethers'
 import { Command, Keypair, PubKey } from 'maci-domainobjs'
 import { genRandomSalt } from 'maci-crypto'
 import { MACI_COORDINATOR_PUBKEY } from './constants'
+import POLL_ABI from 'abi/Poll.abi.json'
 
 export async function calcVotingDeadline(maci: Contract): Promise<number> {
   try {
@@ -47,6 +48,7 @@ export async function signUp(
 }
 
 export async function publish(
+  signer: any,
   maci: Contract,
   keypair: Keypair,
   stateIndex: BigInt,
@@ -61,16 +63,13 @@ export async function publish(
   const sharedKey = Keypair.genEcdhSharedKey(keypair.privKey, coordinatorPubKey)
   const message = command.encrypt(signature, sharedKey)
   try {
-    const tx = await maci.publishMessage(message.asContractParam(), keypair.pubKey.asContractParam())
+    const pollAddress = await maci.getPoll(0);
+    const poll = new ethers.Contract(pollAddress, POLL_ABI, signer)
+    const tx = await poll.publishMessage(message.asContractParam(), keypair.pubKey.asContractParam())
     const receipt = await tx.wait()
     return receipt
   } catch (err: any) {
     alert(err?.data?.message || err?.message)
     throw new Error(err)
   }
-}
-
-export async function changeKey(maci: Contract, keypair: Keypair, stateIndex: BigInt, nonce: BigInt): Promise<any> {
-  const receipt = await publish(maci, keypair, stateIndex, BigInt(0), BigInt(0), nonce)
-  return receipt
 }

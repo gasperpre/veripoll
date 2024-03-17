@@ -88,7 +88,15 @@ const actions = {
     store.setState({ loading: true })
     const keyPair = new Keypair()
     try {
-      await MaciPublish(state.maci, state.keyPair, BigInt(state.userStateIndex), BigInt(0), BigInt(0), BigInt(1))
+      await MaciPublish(
+        state.ethersProvider.getSigner(),
+        state.maci,
+        state.keyPair,
+        BigInt(state.userStateIndex),
+        BigInt(0),
+        BigInt(0),
+        BigInt(1)
+      )
       store.setState({ keyPair: keyPair })
       localStorage.setItem('macisk', keyPair.privKey.serialize())
       localStorage.setItem('initialKeyChangePerformed', String(true))
@@ -149,6 +157,7 @@ const actions = {
       const keyPair = state.bribeMode ? new Keypair() : item.keyPair || state.keyPair
       try {
         const tx = await MaciPublish(
+          state.ethersProvider.getSigner(),
           maci,
           keyPair,
           BigInt(userStateIndex),
