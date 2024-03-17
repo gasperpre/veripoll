@@ -1,13 +1,11 @@
 [Go to MACI repo](https://github.com/gasperpre/maci)
 
-# Quadratic Dollar Homepage
+# AnoniVote
 
-The Quadratic Dollar Homepage is a spin on the [Million Dollar Homepage](http://www.milliondollarhomepage.com/). While
-it also features a space for images on a webpage, it allows users to vote on how much space each image takes up.
-Moreover, it employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
-Infrastructure (MACI) to prevent bribery and scale images quadratically.
+AnoniVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
+Infrastructure (MACI) to prevent bribery and scale images quadratically. Additionally, it uses World ID to ensure sybil resistance.
 
-## How to run QDH locally
+## How to run AnoniVote locally
 
 Clone this repo. Install dependencies by running `yarn` or `npm install`:
 
@@ -27,8 +25,7 @@ vim .env  # set `MONGO_URL, AZURE_STORAGE_ACCOUNT_NAME, etc...`
 
 Your `.env` file should looks something like this:
 ```bash
-NEXT_PUBLIC_MACI_ADDRESS=0x2C2B9C9a4a25e24B174f26114e8926a9f2128FE4
-NEXT_PUBLIC_POAP_ADDRESS=0x22C1f6050E56d2876009903609a2cC3fEf83B415
+NEXT_PUBLIC_MACI_ADDRESS=0x0eBD0f5C0F0131418ab6e49De1a40c3a86722b4f
 
 NEXT_PUBLIC_STRAPI_URL=https://strapi-admin.quadratic.page
 
@@ -41,15 +38,6 @@ AZURE_CONNECTION_STRING=DefaultEndpointsProtocol=https...
 ```
 
 Now run `yarn dev` (or `npm run dev`)
-
-> If you are already running `yarn dev` (or `npm run dev`), make sure to kill the process and start it again. Next.js doesn't pick up `.env` changes automatically. Hence you need to restart it manually.
-
-On the output, you should see something like this:
-
-```bash
-Loaded env from /your-project-path/qdh/.env
-ready - started server on 0.0.0.0:3000, url: http://localhost:3000
-```
 
 Frontend is now accessible on http://localhost:3000
 

@@ -32,10 +32,8 @@ export default function HowtoPopup({ trigger }) {
       trigger={trigger}
       title='About QDH'>
       <p className='mb-5 text-sm leading-5 text-gray-800'>
-        The Quadratic Dollar Homepage is a spin on the Million Dollar Homepage. While it also features a space for
-        images on a webpage, it allows users to vote on how much space each image takes up. Moreover, it employs a
-        quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion Infrastructure
-        (MACI) to prevent bribery and scale images quadratically.
+        AnoniVote employs a quadratic and collusion-resistant voting mechanism on Ethereum called Minimal Anti-Collusion
+        Infrastructure (MACI) to prevent bribery and scale images quadratically. Additionally, it uses World ID to ensure sybil resistance.
       </p>
       <h3 className='mb-2 text-lg font-medium leading-6 text-gray-900'>How to vote</h3>
       <ol className='pl-4 mb-5 text-sm leading-5 text-gray-800 list-decimal list-outside'>
@@ -56,17 +54,6 @@ export default function HowtoPopup({ trigger }) {
           Once you feel happy with the votes you’ve selected, go ahead click "<b>Vote</b>" to cast all votes at once.
         </li>
       </ol>
-      {/* <br />
-    The inspiration for this project is the Million Dollar Homepage. MDH allowed anyone to purchase pixels on an
-    image on a website and use said pixels to display anything they wanted.
-    <br />
-    <br /> The Quadratic Dollar Homepage is a spin on the MDH. While it also features a space for images on a
-    webpage, it allows users to vote on how much space each image takes up. Moreover, it employs a quadratic and
-    collusion-resistant voting mechanism on Ethereum called{' '}
-    <a href='https://github.com/appliedzkp/maci' target='_blank'>
-      Minimal Anti-Collusion Infrastructure (MACI)
-    </a>{' '}
-    to prevent bribery and scale images quadratically. */}
 
       <h3 className='mb-2 text-lg font-medium leading-6 text-gray-900'>If you are being bribed</h3>
       <p className='mb-5 text-sm leading-5 text-gray-800'>

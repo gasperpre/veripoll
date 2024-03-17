@@ -42,7 +42,7 @@ export default function Nav() {
   return (
     <nav className='relative z-10'>
       <ul className='flex justify-between p-4'>
-        <h1 className='text-2xl'>Quadratic Dollar Homepage</h1>
+        <h1 className='text-2xl'>AnoniVote</h1>
         <div className='space-x-2'>
           {loading && <Loader className='relative inline-block -mt-1 text-left' />}
           <SignUpCountDown votingDeadline={votingDeadline} signedUp={signedUp} />

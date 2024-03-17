@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <DefaultSeo title='Quadratic Dollar Homepage' />
+      <DefaultSeo title='AnoniVote' />
       <Head>
         <link rel='manifest' href='/manifest.json' />
         <link rel='shortcut icon' href='/ballot-box-emoji.png' />
